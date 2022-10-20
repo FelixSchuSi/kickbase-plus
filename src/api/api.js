@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import store from '../store/store'
 import Constants from "../Constants";
-import {sleep} from "@/helper/helper";
+import { sleep } from "@/helper/helper";
 
 const getTodaysDateAsString = () => {
     const today = new Date();
@@ -153,9 +153,9 @@ const api = {
                     }
                 }
             }).catch(function () {
-            store.commit('addErrorLoadingMessage', 'could not fetch ranking')
-            store.commit('setErrorMessage', 'could not fetch ranking')
-        })
+                store.commit('addErrorLoadingMessage', 'could not fetch ranking')
+                store.commit('setErrorMessage', 'could not fetch ranking')
+            })
     },
     loadPersonalData(cb, showLoading = true) {
         if (showLoading) {
@@ -175,11 +175,11 @@ const api = {
                     }
                 }
             }).catch(function () {
-            if (showLoading) {
-                store.commit('addErrorLoadingMessage', 'could not fetch user data')
-                store.commit('setErrorMessage', 'could not fetch user data')
-            }
-        })
+                if (showLoading) {
+                    store.commit('addErrorLoadingMessage', 'could not fetch user data')
+                    store.commit('setErrorMessage', 'could not fetch user data')
+                }
+            })
     },
     loadLeagues(cb) {
         store.commit('setLoading', true)
@@ -215,9 +215,9 @@ const api = {
                     }
                 }
             }).catch(function () {
-            store.commit('addErrorLoadingMessage', 'could not fetch player\'s leagues')
-            store.commit('setErrorMessage', 'could not fetch player\'s leagues')
-        })
+                store.commit('addErrorLoadingMessage', 'could not fetch player\'s leagues')
+                store.commit('setErrorMessage', 'could not fetch player\'s leagues')
+            })
     },
     loadUsersPlayerOffers(cb) {
         store.commit('addLoadingMessage', 'loading market offers')
@@ -233,9 +233,9 @@ const api = {
                     }
                 }
             }).catch(function () {
-            store.commit('addErrorLoadingMessage', 'could not fetch player\'s offers')
-            store.commit('setErrorMessage', 'could not fetch player\'s offers')
-        })
+                store.commit('addErrorLoadingMessage', 'could not fetch player\'s offers')
+                store.commit('setErrorMessage', 'could not fetch player\'s offers')
+            })
 
     },
     async loadBids(fetchStats, cb) {
@@ -265,6 +265,7 @@ const api = {
                         cleanedPlayers.forEach(async (player) => {
                             if (!player.userId) {
                                 await this.loadPlayersStats(player.id)
+                                await this.loadPlayerPoints(player.id)
                             }
                         })
                     }
@@ -308,7 +309,7 @@ const api = {
                             callback()
                         }
                         store.commit('addPlayer', response.data)
-                        store.commit('addPlayersStatsFetched', {playerId, value: todayAsString})
+                        store.commit('addPlayersStatsFetched', { playerId, value: todayAsString })
                     }
                 })
                 .catch(function () {
@@ -622,6 +623,22 @@ const api = {
                 }
             }
         })
+
+    },
+    loadPlayerPoints(playerId) {
+        axios({
+            'url': `https://api.kickbase.com/players/${playerId}/points`,
+            "method": "GET",
+        })
+            .then((response) => {
+                response.data.playerId = playerId;
+                if (response.status === 200) {
+                    store.commit('addPointsScored', { seasons: [...response.data.s], playerId });
+                }
+            })
+            .catch(function () {
+                store.commit('setErrorMessage', 'could not fetch details of player with id: ' + playerId)
+            })
 
     }
 }
