@@ -20,6 +20,14 @@ function addPlayer(state, player) {
   }
 }
 
+function addPointsScored(state, payload) {
+  if (payload?.playerId && payload?.seasons?.length > 0) {
+    const pointsScored = Object.assign({}, state.pointsScored);
+    pointsScored[payload.playerId] = payload.seasons
+    state.pointsScored = pointsScored
+  }
+}
+
 function addPlayersStatsFetched(state, payload) {
   if (payload.playerId) {
     const playersStatsFetched = Object.assign({}, state.playersStatsFetched)
@@ -175,6 +183,7 @@ function setOfferOrder(state, payload) {
 
 export default {
   addPlayer,
+  addPointsScored,
   addUsersPlayer,
   addTransfersToUser,
   addUser,

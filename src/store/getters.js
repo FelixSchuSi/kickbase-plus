@@ -14,6 +14,10 @@ function getPlayers(state) {
   return state.players
 }
 
+function getPointsScored(state) {
+  return state.pointsScored
+}
+
 function getLiveData(state) {
   return state.liveData
 }
@@ -65,8 +69,8 @@ function getSelfPlayerDetails(state) {
 
 function getPlayersOfMe(state) {
   return (state.self && state.users[state.self] && state.users[state.self].players) ?
-      state.users[state.self].players :
-      []
+    state.users[state.self].players :
+    []
 }
 
 function getLoading(state) {
@@ -134,6 +138,7 @@ export default {
   getErrorMessage,
   getBids,
   getPlayers,
+  getPointsScored,
   getUsers,
   getTeams,
   getBearerToken,

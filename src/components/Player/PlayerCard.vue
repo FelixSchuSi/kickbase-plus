@@ -1,7 +1,5 @@
 <template>
-  <v-card
-      class="elevation-6 pa-4 mt-5 player-card"
-  >
+  <v-card class="elevation-6 pa-4 mt-5 player-card">
     <div v-if="hasPreHeadSlot" class="player-card__pre-head">
       <div class="player-card__pre-head__content">
         <slot name="pre-head"></slot>
@@ -15,11 +13,7 @@
             </v-img>
             <v-img :src="getPlayerImage" aspect-ratio="1" class="hidden-xs-only player-card__player-image">
               <template v-slot:placeholder>
-                <v-row
-                    class="fill-height ma-0"
-                    align="center"
-                    justify="center"
-                >
+                <v-row class="fill-height ma-0" align="center" justify="center">
                   <v-icon size="128">
                     fa-user-alt
                   </v-icon>
@@ -37,8 +31,8 @@
           </div>
           <div class="player-card-meta__item player-card-meta__item--sm-third">
             <v-alert :color="getGrowthColor" dense text :icon="getGrowthIcon" class="mt-0">{{
-                getDiffMV | numeral('0,0 $')
-              }} (growth)
+            getDiffMV | numeral('0,0 $')
+            }} (growth)
             </v-alert>
           </div>
           <div class="player-card-meta__item player-card-meta__item--sm-fifth" v-if="hidePlayerPoints === false">
@@ -65,30 +59,33 @@
         <div :class="statsCssClass">
           <v-expansion-panels accordion focusable class="elevation-1 player-card-accordion">
             <slot name="extra-expansion-panel"></slot>
-            <v-expansion-panel
-                v-if="showPurchaseStatistic"
-            >
+            <v-expansion-panel v-if="showPurchaseStatistic">
               <v-expansion-panel-header class="elevation-0">
                 <v-icon class="mr-2 player-card-accordion__icon" color="teal darken-2">fa-search-dollar</v-icon>
                 purchase statistics
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-data-table
-                    :headers="getPlayerStatistics.headers"
-                    :items="getPlayerStatistics.values"
-                    :hide-default-footer="true"
-                    class="elevation-1"
-                ></v-data-table>
+                <v-data-table :headers="getPlayerStatistics.headers" :items="getPlayerStatistics.values"
+                  :hide-default-footer="true" class="elevation-1"></v-data-table>
               </v-expansion-panel-content>
             </v-expansion-panel>
-            <v-expansion-panel
-            >
+            <v-expansion-panel>
               <v-expansion-panel-header class="elevation-0">
                 <v-icon class="mr-2 player-card-accordion__icon" color="blue lighten-2">fa-chart-line</v-icon>
                 market value trend
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <player-market-value-trend :player="player"></player-market-value-trend>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel>
+              <v-expansion-panel-header class="elevation-0">
+                <v-icon class="mr-2 player-card-accordion__icon" color="green lighten-2">fa-futbol</v-icon>
+                points scored
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <player-points :player="player"></player-points>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
@@ -104,17 +101,19 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 import StatusPill from "../StatusPill";
 import numeral from "numeral";
 import PlayerMarketValueTrend from "./PlayerMarketValueTrend";
+import PlayerPoints from "./PlayerPoints.vue";
 
 export default {
   name: "PlayerCard",
   components: {
     StatusPill,
     PlayerMarketValueTrend,
+    PlayerPoints
   },
   props: {
     player: {
@@ -253,8 +252,8 @@ export default {
     },
     getYesterdaysMV() {
       if (
-          this.getPlayers[this.player.id]
-          && this.getPlayers[this.player.id].marketValues.length > 3
+        this.getPlayers[this.player.id]
+        && this.getPlayers[this.player.id].marketValues.length > 3
       ) {
         return this.getPlayers[this.player.id].marketValues[this.getPlayers[this.player.id].marketValues.length - 2].m
       }
@@ -262,10 +261,10 @@ export default {
     },
     getDiffMV() {
       if (
-          this.getPlayers[this.player.id]
-          && this.getPlayers[this.player.id].marketValues
-          && this.getPlayers[this.player.id].marketValues[this.getPlayers[this.player.id].marketValues.length - 1]
-          && this.getPlayers[this.player.id].marketValues[this.getPlayers[this.player.id].marketValues.length - 2]
+        this.getPlayers[this.player.id]
+        && this.getPlayers[this.player.id].marketValues
+        && this.getPlayers[this.player.id].marketValues[this.getPlayers[this.player.id].marketValues.length - 1]
+        && this.getPlayers[this.player.id].marketValues[this.getPlayers[this.player.id].marketValues.length - 2]
       ) {
         return this.getPlayers[this.player.id].marketValues[this.getPlayers[this.player.id].marketValues.length - 1].m - this.getPlayers[this.player.id].marketValues[this.getPlayers[this.player.id].marketValues.length - 2].m
       }
