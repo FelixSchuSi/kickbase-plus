@@ -1,24 +1,13 @@
 <template>
-  <player-card
-      :class="{'own-bid':hasOwnBid, 'no-bid':hasNoBid, 'only':hasOnlySelfBid}"
-      class="bid-row"
-      :player="player"
-      :show-purchase-statistic=false
-  >
+  <player-card :class="{'own-bid':hasOwnBid, 'no-bid':hasNoBid, 'only':hasOnlySelfBid}" class="bid-row" :player="player"
+    :show-purchase-statistic=false>
     <template v-slot:pre-head>
-      <v-alert
-          text
-          :color="(isDarkTheme) ? 'deep-purple lighten-3': 'deep-purple darken-4'"
-          icon="fa-clock"
-      >
+      <v-alert text :color="(isDarkTheme) ? 'deep-purple lighten-3': 'deep-purple darken-4'" icon="fa-clock">
         {{ expiryDate }}
       </v-alert>
 
-      <v-alert v-if="hasNoBid"
-               text
-               :color="(isDarkTheme) ? 'lime darken-3': 'orange darken-3'"
-               icon="fa-exclamation-circle"
-      >
+      <v-alert v-if="hasNoBid" text :color="(isDarkTheme) ? 'lime darken-3': 'orange darken-3'"
+        icon="fa-exclamation-circle">
         NO BID
       </v-alert>
 
@@ -27,17 +16,13 @@
       </v-alert>
 
       <v-alert v-else-if="hasOwnBid" text dark class="text--white"
-               :color="(isDarkTheme) ? 'purple darken-1': 'purple accent-4'" icon="fa-clipboard-check">
+        :color="(isDarkTheme) ? 'purple darken-1': 'purple accent-4'" icon="fa-clipboard-check">
         YOU BID
       </v-alert>
 
       <template v-if="foreignOffers.length">
-        <v-alert v-for="bid in foreignOffers"
-                 :key="bid.id"
-                 text
-                 :color="(isDarkTheme) ? 'green lighten-4': 'green darken-4'"
-                 icon="fa-money-bill-wave"
-        >
+        <v-alert v-for="bid in foreignOffers" :key="bid.id" text
+          :color="(isDarkTheme) ? 'green lighten-4': 'green darken-4'" icon="fa-money-bill-wave">
           <span class="text-caption">{{ bid.userName }}</span>
           <small>&nbsp;{{ getDate(bid.date) }}</small>
         </v-alert>
@@ -51,33 +36,24 @@
     <v-form @submit.prevent="dummySubmit" class="playerBidForm mt-5 mb-4">
       <div class="d-sm-flex d-block">
         <div class="bid-input-container mr-5">
-          <vue-numeric-input
-              :initialNumber="bidValue"
-              :has-bid="(playerBid !== null)"
-              :min="1"
-              align="center"
-              :mousewheel=false
-              v-on:input="setInputValue"
-              v-on:submit="setInputValue"
-              :placeholder="inputPlaceholder"
-          ></vue-numeric-input>
+          <vue-numeric-input :initialNumber="bidValue" :has-bid="(playerBid !== null)" :min="1" align="center"
+            :mousewheel=false v-on:input="setInputValue" v-on:submit="setInputValue" :placeholder="inputPlaceholder">
+          </vue-numeric-input>
           <saved-alert :value="showSavedAlert" message="saved bid for player"></saved-alert>
         </div>
         <div class="bid-input-container">
           <div class="text-caption">
             {{ getComputedBid }}
-            <span
-                v-if="getComputedBid !== 'no bid'"
-            >
-            <span class="hidden-sm-and-up">, </span>
-          <br class="hidden-xs-only">
-            you bid
-            <strong>{{ getComputedDifference.number }}</strong> Euros{{ getComputedDifferenceWording }}
-            (<span
+            <span v-if="getComputedBid !== 'no bid'">
+              <span class="hidden-sm-and-up">, </span>
+              <br class="hidden-xs-only">
+              you bid
+              <strong>{{ getComputedDifference.number }}</strong> Euros{{ getComputedDifferenceWording }}
+              (<span
                 :class="{'text--green': (getComputedDifference.number<=0), 'text--red': (getComputedDifference.number>0)}">{{
                 getComputedDifference.percentage
-              }} %</span>)
-          </span>
+                }} %</span>)
+            </span>
           </div>
         </div>
       </div>
@@ -92,21 +68,14 @@
     <div class="mb-5">
       <h3 class="text-subtitle-1">Bid-Buttons:</h3>
       <div class="bids-button-row">
-        <v-btn
-            @click="sendPercentageBid(percent)"
-            dense
-            outlined
-            v-for="percent in bidButtons"
-            :key="percent"
-        >
+        <v-btn @click="sendPercentageBid(percent)" dense outlined v-for="percent in bidButtons" :key="percent">
           <span v-html="getButtonLabel(percent)"></span>
         </v-btn>
       </div>
     </div>
 
     <template v-slot:extra-expansion-panel v-if="player.offers && player.offers.length && hasOnlySelfBid === false">
-      <v-expansion-panel
-      >
+      <v-expansion-panel>
         <v-expansion-panel-header class="elevation-0">
           <v-icon class="mr-2 player-card-accordion__icon" color="green darken-1">fa-money-bill-wave</v-icon>
           <strong>{{ player.offers.length }}</strong> user bid on this player
@@ -115,29 +84,29 @@
           <v-simple-table class="mb-5 bid-table">
             <template>
               <tbody>
-              <tr>
-                <th>
-                  Name
-                </th>
-                <th>
-                  Details
-                </th>
-              </tr>
-              <tr v-for="(offer, okey) in sortedOffers" :key="okey" :class="{'foo': offer.isSelf}">
-                <td>
-                  <span v-if="offer.userName">{{ offer.userName }}</span>
-                  <span v-else>KICKBASE</span>:
-                </td>
-                <td>
-              <span v-if="offer.userId != getSelf">
-              {{ getDate(offer.date) }}
-              <small> / has {{ getUsersPlayers(offer.userId) }} players</small>
-            </span>
-                  <span v-else>
-            {{ offer.price | numeral('0,0 $') }}
-          </span>
-                </td>
-              </tr>
+                <tr>
+                  <th>
+                    Name
+                  </th>
+                  <th>
+                    Details
+                  </th>
+                </tr>
+                <tr v-for="(offer, okey) in sortedOffers" :key="okey" :class="{'foo': offer.isSelf}">
+                  <td>
+                    <span v-if="offer.userName">{{ offer.userName }}</span>
+                    <span v-else>KICKBASE</span>:
+                  </td>
+                  <td>
+                    <span v-if="offer.userId != getSelf">
+                      {{ getDate(offer.date) }}
+                      <small> / has {{ getUsersPlayers(offer.userId) }} players</small>
+                    </span>
+                    <span v-else>
+                      {{ offer.price | numeral('0,0 $') }}
+                    </span>
+                  </td>
+                </tr>
               </tbody>
             </template>
           </v-simple-table>
@@ -150,7 +119,7 @@
 
 <script>
 import api from '../api/api'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 import debounce from "lodash.debounce";
 
 import moment from 'moment'
@@ -161,7 +130,8 @@ numeral.locale('deff')
 import PlayerCard from './Player/PlayerCard'
 import VueNumericInput from './Generic/NumericInput'
 import SavedAlert from './Generic/SavedAlert'
-import {sleep} from "@/helper/helper";
+import { sleep } from "@/helper/helper";
+import { getTeamLogo } from "../helper/get-team-logo";
 
 const lastDayChangesClassConst = 'hidden-sm-and-down'
 
@@ -267,8 +237,8 @@ export default {
     },
     hasPlayerStats() {
       return (Object.keys(this.getPlayers).length >= 1
-          &&
-          this.getPlayers[this.player.id]
+        &&
+        this.getPlayers[this.player.id]
       )
     },
     expiryDate() {
@@ -398,7 +368,7 @@ export default {
       return position
     },
     teamImage() {
-      return '/assets/teams/' + this.player.teamId + '.png'
+      return getTeamLogo(this.player.teamId)
     },
     hasOwnBid() {
       const offers = this.player.offers
@@ -493,7 +463,7 @@ export default {
     getUsersPlayers(userId) {
       const users = this.getUsers
       return (
-          users[userId] && users[userId].players && users[userId].players.length
+        users[userId] && users[userId].players && users[userId].players.length
       ) ? users[userId].players.length : 0
     },
     openLastDayChanges() {

@@ -107,6 +107,7 @@ import StatusPill from "../StatusPill";
 import numeral from "numeral";
 import PlayerMarketValueTrend from "./PlayerMarketValueTrend";
 import PlayerPoints from "./PlayerPoints.vue";
+import { getTeamLogo } from "../../helper/get-team-logo";
 
 export default {
   name: "PlayerCard",
@@ -248,7 +249,7 @@ export default {
       return position
     },
     teamImage() {
-      return '/assets/teams/' + this.player.teamId + '.png'
+      return getTeamLogo(this.player.teamId)
     },
     getYesterdaysMV() {
       if (

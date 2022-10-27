@@ -1,3 +1,5 @@
+import { getTeamLogo } from "./get-team-logo";
+
 const nextMatch = (matches, player) => {
     let m = null
     if (matches && matches.length && player) {
@@ -8,14 +10,14 @@ const nextMatch = (matches, player) => {
                         abbr: match.t2y,
                         name: match.t2n,
                         id: match.t2i,
-                        img: '/assets/teams/' + match.t2i + '.png',
+                        img: getTeamLogo(match.t2i),
                     }
                 } else if (match.t2i === player.teamId) {
                     m = {
                         abbr: match.t1y,
                         name: match.t1n,
                         id: match.t1i,
-                        img: '/assets/teams/' + match.t1i + '.png',
+                        img: getTeamLogo(match.t1i),
                     }
                 }
                 return

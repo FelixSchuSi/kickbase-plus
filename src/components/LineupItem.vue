@@ -33,6 +33,7 @@
 <script>
 import StatusPill from './StatusPill'
 import {nextMatch} from '../helper/helper'
+import {getTeamLogo} from '../helper/get-team-logo'
 
 export default {
   props: {
@@ -50,7 +51,7 @@ export default {
   },
   computed: {
     teamImage() {
-      return '/assets/teams/' + this.item.teamId + '.png'
+      return getTeamLogo(this.item.teamId)
     },
     nextMatchComputed() {
       return nextMatch(this.matches, this.item)

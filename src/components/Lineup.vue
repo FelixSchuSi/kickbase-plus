@@ -139,12 +139,12 @@
 import api from '../api/api'
 import moment from 'moment'
 import {mapGetters, mapMutations} from 'vuex'
-
 import StatusPill from './StatusPill'
 import Spinner from './Spinner'
 import LineupItem from './LineupItem'
 import LineupTable from './LineupTable'
 import {nextMatch} from '../helper/helper'
+import {getTeamLogo} from '../helper/get-team-logo'
 
 export default {
   name: 'lineup-component',
@@ -486,7 +486,7 @@ export default {
     playerTeamImg(player) {
       let img = null
       if (player) {
-        img = '/assets/teams/' + player.teamId + '.png'
+        img = getTeamLogo(player.teamId);
       }
       return img
     },

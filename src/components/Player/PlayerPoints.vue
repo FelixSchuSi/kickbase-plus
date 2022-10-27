@@ -96,7 +96,7 @@ export default {
     methods: {
         fetchData() {
             api.loadPlayerPoints(this.player.id)
-        },
+        }
     }
 }
 </script>

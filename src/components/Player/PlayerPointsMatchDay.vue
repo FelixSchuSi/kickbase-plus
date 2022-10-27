@@ -6,8 +6,8 @@
         </div>
         <div class="player-points-match-bar" :style="barStyles">
             <!-- render assist symbol(s) if player has assisted a goal -->
-            <svg v-for="n in matchDay.a" :key="n" class="player-points-match-goal-assist" width="14" height="14"
-                viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg v-for="n in matchDay.a" :key="'assist_' + n" class="player-points-match-goal-assist" width="14"
+                height="14" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M10.025 11.9412H0.190917C0.00612408 11.9412 -0.0700793 12.1774 0.0785173 12.286L8.03415 18.066C8.13893 18.1422 8.28753 18.0946 8.32753 17.9708L10.2059 12.1907C10.246 12.0669 10.1545 11.9412 10.025 11.9412Z"
                     fill="white" />
@@ -16,8 +16,8 @@
                     fill="white" />
             </svg>
             <!-- render goal symbol(s) if player has scored a goal -->
-            <svg v-for="n in matchDay.g" :key="n" class="player-points-match-goal-assist" height="12" width="12"
-                viewBox="0 0 1000 1000">
+            <svg v-for="n in matchDay.g" :key="'goal_' + n" class="player-points-match-goal-assist" height="12"
+                width="12" viewBox="0 0 1000 1000">
                 <g>
                     <path fill="white"
                         d="M343,456.3l157-113.8l157,113.8L597.3,640H403.2L343,456.3z M500,10c66.4,0,129.8,12.9,190.3,38.8S803,109.5,846.7,153.3c43.8,43.7,78.6,95.9,104.5,156.4c25.9,60.5,38.8,124,38.8,190.3c0,66.4-12.9,129.8-38.8,190.3c-25.9,60.5-60.7,112.7-104.5,156.4s-95.9,78.6-156.4,104.5C629.8,977.1,566.4,990,500,990c-66.4,0-129.8-12.9-190.3-38.8c-60.5-25.9-112.7-60.7-156.4-104.5S74.7,750.8,48.8,690.3C22.9,629.8,10,566.4,10,500c0-66.4,12.9-129.8,38.8-190.3S109.5,197,153.3,153.3c43.8-43.8,95.9-78.6,156.4-104.5C370.2,22.9,433.6,10,500,10z M838.5,748.3c54.3-74,81.5-156.8,81.5-248.3v-1.6L864.2,547L733,424.5l34.5-176.6l73.3,6.6C786,179.3,715.1,127.9,628,100.2l29,67.8l-157,87l-157-87l29-67.8c-87.1,27.7-158,79.1-212.7,154.2l73.8-6.6L267,424.5L135.8,547L80,498.4v1.6c0,91.5,27.2,174.3,81.5,248.3l16.4-72.2L356.2,698l76,163l-63.4,37.7C411.4,912.9,455.2,920,500,920c44.8,0,88.6-7.1,131.3-21.3l-63.4-37.7l76-163l178.3-21.9L838.5,748.3z" />
@@ -26,8 +26,8 @@
         </div>
         <small class="player-points-match-points player-points-match-value">{{ matchDay.p ?? 0 }}</small>
         <div class="player-points-match-team-logos">
-            <img class="home" :src="`/assets/teams/${matchDay.t1i}.png`" />
-            <img class="away" :src="`/assets/teams/${matchDay.t2i}.png`" />
+            <img class="home" :src="getTeamLogo(matchDay.t1i)" />
+            <img class="away" :src="getTeamLogo(matchDay.t2i)" />
         </div>
         <svg class="player-points-match-score">
             <rect x="0" y="0" width="50" height="16" />
@@ -44,6 +44,7 @@
 </template>
   
 <script>
+import { getTeamLogo } from '../../helper/get-team-logo'
 export default {
     name: "PlayerPointsMatchDay",
     props: {
@@ -65,6 +66,7 @@ export default {
     computed: {
     },
     methods: {
+        getTeamLogo
     }
 }
 </script>
